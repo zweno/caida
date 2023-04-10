@@ -1,0 +1,69 @@
+apply plugin: 'kotlin-android'
+import com.wanhesec.versionplugin.*
+
+android {
+    compileSdkVersion BuildConfig.compileSdkVersion
+    buildToolsVersion BuildConfig.buildToolsVersion
+    defaultConfig {
+        applicationId "com.wanhesec.ygandroid"
+        minSdkVersion BuildConfig.minSdkVersion
+        targetSdkVersion BuildConfig.targetSdkVersion
+        versionCode BuildConfig.versionCode
+        versionName BuildConfig.versionName
+        flavorDimensions "default"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    productFlavors{
+        //不同环境包名配置，环境配置在VersionPlugin中，因为地址子工程都要访问，而包名由壳子决定
+        prd{
+            applicationId "com.wanhesec.ygandroid"
+            manifestPlaceholders =[APP_NAME:"和胜展业平台"]
+            if(getGradle().getStartParameter().getTaskRequests().toString().toLowerCase().contains("prd")){
+                BuildConfig.API_HOST = "\"https://ygzy.vanho.cn:8001\""
+                 println("修改buildConfig的值prd"+BuildConfig.API_HOST)
+            }
+        }
+        mtest{
+            applicationId "com.wanhesec.ygandroid_test"
+            manifestPlaceholders =[APP_NAME:"和胜展业测试"]
+            if(getGradle().getStartParameter().getTaskRequests().toString().toLowerCase().contains("mtest")){
+                BuildConfig.API_HOST = "\"http://ygzytest.vanho.com.cn:8090\""
+                println("修改buildConfig的值mtest"+BuildConfig.API_HOST)
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation Kt.stdlibJdk7
+    implementation AndroidX.appcompat
+    implementation AndroidX.coreKtx
+    implementation AndroidX.constraintlayout
+    implementation AndroidX.liveData_ktx
+    implementation AndroidX.viewModel_ktx
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    testImplementation Depend.junit
+    androidTestImplementation Depend.androidTestJunit
+    androidTestImplementation Depend.espressoCore
+
+    implementation project(path: ':WanheCore')
+
+}

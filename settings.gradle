@@ -1,0 +1,4 @@
+include ':WanheCore'
+includeBuild('VersionPlugin')
+include ':app'
+rootProject.name='HeshengZhanye'

@@ -1,0 +1,56 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+import com.wanhesec.versionplugin.*
+import org.gradle.internal.impldep.org.junit.runners.JUnit4
+
+android {
+    compileSdkVersion BuildConfig.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion BuildConfig.minSdkVersion
+        targetSdkVersion BuildConfig.targetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+        println("获取buildConfig的值"+BuildConfig.API_HOST)
+        buildConfigField("String","API_HOST",BuildConfig.API_HOST)
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    api Kt.stdlibJdk7
+    api Kt.coroutines_core
+    api Kt.coroutines_android
+    api AndroidX.appcompat
+    api AndroidX.coreKtx
+    api AndroidX.extensions_ktx
+    api AndroidX.viewModel_ktx
+    api Okhttp.okhttpLog
+    api Retrofit.runtime
+    api Retrofit.gson
+    api Depend.cc
+
+
+//    implementation 'com.google.android.material:material:1.1.0'
+    testImplementation Depend.junit
+    androidTestImplementation Depend.androidTestJunit
+    androidTestImplementation Depend.espressoCore
+
+}
